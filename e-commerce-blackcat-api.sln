@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "e-commerce-blackcat-api", "e-commerce-blackcat-api.csproj", "{35CCEF4D-736E-C584-7622-96A5A1654F04}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35CCEF4D-736E-C584-7622-96A5A1654F04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35CCEF4D-736E-C584-7622-96A5A1654F04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35CCEF4D-736E-C584-7622-96A5A1654F04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35CCEF4D-736E-C584-7622-96A5A1654F04}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A2FCDD5F-6A65-488D-97A9-57F71C61704B}
+	EndGlobalSection
+EndGlobal
