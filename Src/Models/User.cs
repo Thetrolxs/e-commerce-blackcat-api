@@ -10,5 +10,10 @@ namespace e_commerce_blackcat_api.Src.Models
     // Uso de identity con clave primaria (ID)
     public class User : IdentityUser<int>
     {
+        public string FullName {get; set;} = string.Empty;
+
+        //Relaciones
+        public ICollection<Order> Orders {get; set;} = null!;
+        public ICollection<CartItem> CartItems {get; set;} = null!;
     }
 }
