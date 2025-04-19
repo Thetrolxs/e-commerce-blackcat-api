@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Identity;
+using e_commerce_blackcat_api.Src.Models;
 
 namespace e_commerce_blackcat_api.Src.Models
 {
@@ -11,6 +8,8 @@ namespace e_commerce_blackcat_api.Src.Models
     public class User : IdentityUser
     {
         public string FullName {get; set;} = string.Empty;
+
+        public ShippingAddres? ShippingAddres { get; set; }
 
         //Relaciones
         public ICollection<Order> Orders {get; set;} = null!;
