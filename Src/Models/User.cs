@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 namespace e_commerce_blackcat_api.Src.Models
 {
     // Uso de identity con clave primaria (ID)
-    public class User : IdentityUser<int>
+    public class User : IdentityUser
     {
         public string FullName {get; set;} = string.Empty;
 
