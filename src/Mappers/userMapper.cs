@@ -11,6 +11,11 @@ public static class UserMapper
             Id = user.Id,
             FullName = user.FullName,
             Email = user.Email!,
-            PhoneNumber = user.PhoneNumber!
+            PhoneNumber = user.PhoneNumber!,
+            Street = user.ShippingAddres?.Street,
+            Number = user.ShippingAddres?.Number,
+            Commune = user.ShippingAddres?.Commune,
+            Region = user.ShippingAddres?.Region,
+            PostalCode = user.ShippingAddres?.PostalCode
         };
 }
