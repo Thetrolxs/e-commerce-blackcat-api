@@ -10,6 +10,7 @@ namespace e_commerce_blackcat_api.Src.Models
     {
         public int Id {get; set;}
         public string UserId {get; set;} = string.Empty;
+        public User User {get; set;} = null!;
 
         public DateTime CreatedOrder {get; set;} = DateTime.UtcNow;
 
