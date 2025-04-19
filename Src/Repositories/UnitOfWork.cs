@@ -5,11 +5,11 @@ namespace e_commerce_blackcat_api.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly ApplicationDbContext _context;
+    private readonly DataContext _context;
 
     public IProductRepository Products { get; }
 
-    public UnitOfWork(ApplicationDbContext context, IProductRepository productRepository)
+    public UnitOfWork(DataContext context, IProductRepository productRepository)
     {
         _context = context;
         Products = productRepository;

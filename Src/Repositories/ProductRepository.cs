@@ -7,9 +7,9 @@ namespace e_commerce_blackcat_api.Repositories;
 
 public class ProductRepository : IProductRepository
 {
-    private readonly ApplicationDbContext _context;
+    private readonly DataContext _context;
 
-    public ProductRepository(ApplicationDbContext context)
+    public ProductRepository(DataContext context)
     {
         _context = context;
     }
