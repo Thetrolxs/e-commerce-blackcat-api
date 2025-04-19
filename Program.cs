@@ -6,6 +6,8 @@ using e_commerce_blackcat_api.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<DataContext>(options =>
@@ -14,6 +16,8 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 var app = builder.Build();
+
+DbInitializer.InitDb(app);
 
 app.MapControllers();
 
