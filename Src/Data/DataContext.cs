@@ -9,5 +9,9 @@ namespace e_commerce_blackcat_api.Data;
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<ShippingAddres> ShippingAddres { get; set; } = null!;
         public DbSet<Product> Products => Set<Product>();
-        public new DbSet<User> Users => Set<User>();
+        public DbSet<CartItem> CartItems => Set<CartItem>();
+        public DbSet<Order> Orders => Set<Order>();
+        public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
+
+        
     }
