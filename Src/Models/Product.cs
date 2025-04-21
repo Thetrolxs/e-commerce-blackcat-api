@@ -1,3 +1,5 @@
+using e_commerce_blackcat_api.Src.Models;
+
 namespace e_commerce_blackcat_api.Models;
 
 public class Product
@@ -11,4 +13,9 @@ public class Product
     public string Brand { get; set; } = string.Empty;
     public bool IsNew { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    //Relaciones
+    public ICollection<CartItem> CartItems { get; set; } = null!;
+    public ICollection<OrderDetail> OrderDetails { get; set; } = null!;
+
 }
