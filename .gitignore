@@ -5,7 +5,8 @@
 
 # dotenv files
 .env
-appsettings.json
+appsettings.Development.json
+blackcat.db
 # User-specific files
 *.rsuser
 *.suo
@@ -268,6 +269,7 @@ ServiceFabricBackup/
 *.rptproj.bak
 
 # SQL Server files
+*.db
 *.mdf
 *.ldf
 *.ndf
