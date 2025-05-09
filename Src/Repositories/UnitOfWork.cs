@@ -7,12 +7,17 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly DataContext _context;
 
-    public IProductRepository Products { get; }
+    public IProductRepository ProductRepository { get; set; }
+    public IUserRepository UserRepository { get; set; }
 
-    public UnitOfWork(DataContext context, IProductRepository productRepository)
+    public UnitOfWork(
+        DataContext context,
+        IProductRepository productRepository,
+        IUserRepository userRepository)
     {
         _context = context;
-        Products = productRepository;
+        ProductRepository = productRepository;
+        UserRepository = userRepository;
     }
 
     public async Task<int> CompleteAsync()
