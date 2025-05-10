@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using e_commerce_blackcat_api.Repositories;
 using e_commerce_blackcat_api.Interfaces;
 using e_commerce_blackcat_api.Src.Dtos;
 using e_commerce_blackcat_api.Src.Models;
 using e_commerce_blackcat_api.Src.Mappers;
-using e_commerce_blackcat_api.Src.Helpers;
+using e_commerce_blackcat_api.Helpers;
 
 
 namespace e_commerce_blackcat_api.Src.Controllers;
@@ -17,12 +18,27 @@ public class ProductController(ILogger<ProductController> logger, IUnitOfWork un
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     [HttpGet]
-    public async Task<ActionResult<ApiResponse<IEnumerable<ProductDto>>>> GetAll()
+    public async Task<ActionResult<ApiResponse<object>>> GetAll([FromQuery] ProductParams queryParams)
     {
-        var products = await _unitOfWork.ProductRepository.GetAllAsync();
-        var result = products.Select(p => p.ToProductDto()).ToList();
-        return Ok(new ApiResponse<IEnumerable<ProductDto>>(true, "Productos obtenidos correctamente", result));
+        var pagedResult = await _unitOfWork.ProductRepository.GetPagedProductsAsync(queryParams);
+
+        var dtoList = pagedResult.Items.Select(p => p.ToProductDto());
+
+        var response = new
+        {
+            products = dtoList,
+            pagination = new
+            {
+                currentPage = pagedResult.PageNumber,
+                pageSize = pagedResult.PageSize,
+                totalItems = pagedResult.TotalCount,
+                totalPages = (int)Math.Ceiling((double)pagedResult.TotalCount / pagedResult.PageSize)
+            }
+        };
+
+        return Ok(new ApiResponse<object>(true, "Productos obtenidos correctamente", response));
     }
+
 
     [HttpGet("{id}")]
     public async Task<ActionResult<ApiResponse<ProductDto>>> GetById(int id)
@@ -34,6 +50,7 @@ public class ProductController(ILogger<ProductController> logger, IUnitOfWork un
         return Ok(new ApiResponse<ProductDto>(true, "Producto encontrado", product.ToProductDto()));
     }
 
+    [Authorize(Roles = "Administrador")]
     [HttpPost]
     public async Task<ActionResult<ApiResponse<ProductDto>>> Create([FromBody] ProductCreateDto dto)
     {
@@ -57,6 +74,7 @@ public class ProductController(ILogger<ProductController> logger, IUnitOfWork un
         return CreatedAtAction(nameof(GetById), new { id = product.Id }, new ApiResponse<ProductDto>(true, "Producto creado exitosamente", product.ToProductDto()));
     }
 
+    [Authorize(Roles = "Administrador")]
     [HttpPut("{id}")]
     public async Task<ActionResult<ApiResponse<ProductDto>>> Update(int id, [FromBody] ProductUpdateDto dto)
     {
@@ -74,6 +92,7 @@ public class ProductController(ILogger<ProductController> logger, IUnitOfWork un
         return Ok(new ApiResponse<ProductDto>(true, "Producto actualizado exitosamente", product.ToProductDto()));
     }
 
+    [Authorize(Roles = "Administrador")]
     [HttpDelete("{id}")]
     public async Task<ActionResult<ApiResponse<string>>> Delete(int id)
     {
