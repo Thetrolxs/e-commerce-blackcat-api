@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace e_commerce_blackcat_api.Src.Helpers
+namespace e_commerce_blackcat_api.Helpers
 {
     public class ApiResponse<T>(bool success, string message, T? data = default, List<string>? errors = null)
     {
