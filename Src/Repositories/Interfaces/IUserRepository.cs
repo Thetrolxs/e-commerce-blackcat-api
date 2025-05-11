@@ -6,7 +6,7 @@ namespace e_commerce_blackcat_api.Interfaces;
 
 public interface IUserRepository
 {
-    Task<IEnumerable<UserDto>> GetAllUsersAsync();
+    Task<IEnumerable<User>> GetAllUsersAsync();
     Task<IEnumerable<User>> SearchUser(string query);
     Task<UserDto> GetUserByIdAsync(string id);
     Task<bool> VerifyEmail(string email);

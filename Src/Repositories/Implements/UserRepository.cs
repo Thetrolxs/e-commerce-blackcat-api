@@ -46,10 +46,9 @@ public class UserRepository : IUserRepository
         return true;
     }
 
-    public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
+    public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
-        var users = await _context.Users.Include(u => u.ShippingAddres).ToListAsync();
-        return users.Select(UserMapper.MapToDto);
+        return await _context.Users.ToListAsync();
     }
 
     public async Task<UserDto> GetUserByIdAsync(string id)
