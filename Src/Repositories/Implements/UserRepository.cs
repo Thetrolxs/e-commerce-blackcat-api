@@ -4,33 +4,46 @@ using e_commerce_blackcat_api.Src.Models;
 using e_commerce_blackcat_api.Src.Dtos;
 using e_commerce_blackcat_api.Src.Mappers;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace e_commerce_blackcat_api.Repositories;
 
 public class UserRepository : IUserRepository
 {
     private readonly DataContext _context;
+    private readonly UserManager<User> _userManager;
 
-    public UserRepository(DataContext context)
+    public UserRepository(DataContext context, UserManager<User> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
-    public async Task CreateUserAsync(User user, ShippingAddres? shippingAddress)
+    public async Task<bool> CreateUserAsync(User user, ShippingAddres? shippingAddress)
     {
         await _context.Users.AddAsync(user);
         if (shippingAddress != null)
         {
             await _context.ShippingAddres.AddAsync(shippingAddress);
         }
+        await _context.SaveChangesAsync();
+        return true;
     }
 
-    public void DeleteUserAsync(User user, ShippingAddres? shippingAddress)
+    public async Task<bool> DeleteUserAsync(User user, ShippingAddres? shippingAddress)
     {
-        if (shippingAddress != null)
+        var existingUser = _context.Users.FirstOrDefault(x => x.Id == user.Id);
+        if(existingUser == null){
+            return false;
+        }     
+        if (shippingAddress != null){
             _context.ShippingAddres.Remove(shippingAddress);
+        }
+        _context.Entry(existingUser).State = EntityState.Deleted;
+        await _context.SaveChangesAsync();
 
-        _context.Users.Remove(user);
+        return true;
     }
 
     public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
@@ -49,24 +62,34 @@ public class UserRepository : IUserRepository
         return UserMapper.MapToDto(user);
     }
 
-    public void UpdateUserAsync(User user)
+    public async Task<bool> UpdateUserAsync(User user, EditUserDto editUserDto)
     {
         var existingUser = _context.Users.FirstOrDefault(x => x.Id == user.Id)
             ?? throw new Exception("User not found");
+        if(existingUser == null){
+            return false;
+        }
 
-        existingUser.FullName = user.FullName;
-        existingUser.Email = user.Email;
-        existingUser.PhoneNumber = user.PhoneNumber;
+        existingUser.FullName = editUserDto.FullName ?? existingUser.FullName;
+        existingUser.PhoneNumber = editUserDto.PhoneNumber ?? existingUser.PhoneNumber;
 
-        _context.Users.Update(existingUser);
+        _context.Entry(existingUser).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
-    public void UpdateShippingAddressAsync(UserDto userDto)
+    public async Task<bool> UpdateShippingAddressAsync(UserDto userDto)
     {
         var user = _context.Users
             .Include(u => u.ShippingAddres)
             .FirstOrDefault(u => u.Id == userDto.Id)
             ?? throw new Exception("User not found");
+        
+        if(userDto == null)
+        {
+            return false;
+        }
 
         if (user.ShippingAddres == null)
         {
@@ -89,6 +112,51 @@ public class UserRepository : IUserRepository
             user.ShippingAddres.PostalCode = userDto.PostalCode!;
         }
 
-        _context.Users.Update(user);
+        _context.Entry(user).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<IEnumerable<User>> SearchUser(string query)
+    {
+        var users = await _context.Users.Where(u => u.Id.ToString().Contains(query)
+                                        || u.FullName.Contains(query)
+                                        || u.Email.Contains(query))
+                                        .ToListAsync();
+
+        return users;
+    }
+
+    public async Task<bool> VerifyEmail(string email)
+    {
+        var user = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+        if(user == null){
+            return false;
+        }
+
+        return true;
+    }
+
+    public Task<bool> VerifyUser(User user)
+    {
+        var existingUser = _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
+        if(existingUser == null){
+            return Task.FromResult(false);
+        }
+
+        return Task.FromResult(true);
+    }
+
+    public async Task<bool> ChangePassword(User user, string currentPassword, string newPassword)
+    {
+        var existingUser = _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
+        if(existingUser == null){
+            return false;
+        }
+
+        await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+
+        return true;
     }
 }

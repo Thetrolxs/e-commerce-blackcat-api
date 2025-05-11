@@ -7,9 +7,14 @@ namespace e_commerce_blackcat_api.Interfaces;
 public interface IUserRepository
 {
     Task<IEnumerable<UserDto>> GetAllUsersAsync();
+    Task<IEnumerable<User>> SearchUser(string query);
     Task<UserDto> GetUserByIdAsync(string id);
-    Task CreateUserAsync(User user, ShippingAddres? shippingAddress);
-    void UpdateUserAsync(User user);
-    void UpdateShippingAddressAsync(UserDto userDto);
-    void DeleteUserAsync(User user, ShippingAddres? shippingAddress);
+    Task<bool> VerifyEmail(string email);
+    Task<bool> VerifyUser(User user);
+    Task<bool> CreateUserAsync(User user, ShippingAddres? shippingAddress);
+    Task<bool> UpdateUserAsync(User user, EditUserDto editUserDto);
+    Task<bool> UpdateShippingAddressAsync(UserDto userDto);
+    Task<bool> DeleteUserAsync(User user, ShippingAddres? shippingAddress);
+    Task<bool> ChangePassword(User user, string currentPassword, string newPassword);
+
 }
