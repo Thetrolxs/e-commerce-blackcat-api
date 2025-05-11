@@ -16,7 +16,6 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
             var mappedUser = users.Select(u => _mapper.Map<UserDto>(u)).ToList();
             return mappedUser;
         }
-
         public UserDto UserToUserDto(User user)
         {
             var mappedUser = _mapper.Map<UserDto>(user);
