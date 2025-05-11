@@ -122,7 +122,7 @@ public class UserRepository : IUserRepository
     {
         var users = await _context.Users.Where(u => u.Id.ToString().Contains(query)
                                         || u.FullName.Contains(query)
-                                        || u.Email.Contains(query))
+                                        || (u.Email != null && u.Email.Contains(query)))
                                         .ToListAsync();
 
         return users;
