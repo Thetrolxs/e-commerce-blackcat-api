@@ -158,4 +158,9 @@ public class UserRepository : IUserRepository
 
         return true;
     }
+
+    public async Task<IList<string>> GetRoleAsync(User user)
+    {
+        return await _userManager.GetRolesAsync(user);
+    }
 }

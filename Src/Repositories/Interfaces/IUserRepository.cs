@@ -14,6 +14,7 @@ public interface IUserRepository
     Task<bool> CreateUserAsync(User user, ShippingAddres? shippingAddress);
     Task<bool> UpdateUserAsync(User user, EditUserDto editUserDto);
     Task<bool> UpdateShippingAddressAsync(UserDto userDto);
+    Task<IList<string>> GetRoleAsync(User user);
     Task<bool> DeleteUserAsync(User user, ShippingAddres? shippingAddress);
     Task<bool> ChangePassword(User user, string currentPassword, string newPassword);
 
