@@ -21,5 +21,11 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
             var mappedUser = _mapper.Map<UserDto>(user);
             return mappedUser;
         }
+
+        public User UserDtoToUser(UserDto userDto)
+        {
+            var map = _mapper.Map<User>(userDto);
+            return map;
+        }
     }
 }
