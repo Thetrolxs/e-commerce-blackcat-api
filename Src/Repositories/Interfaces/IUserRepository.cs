@@ -7,7 +7,8 @@ public interface IUserRepository
 {
     Task<IEnumerable<User>> GetAllUsersAsync();
     Task<IEnumerable<User>> SearchUser(string query);
-    Task<UserDto> GetUserByIdAsync(string id);
+    Task<User?> GetUserByIdAsync(string id);
+    Task<User?> GetUserByEmail(string email);
     Task<bool> VerifyEmail(string email);
     Task<bool> VerifyUser(User user);
     Task<bool> CreateUserAsync(User user, ShippingAddres? shippingAddress);

@@ -51,14 +51,14 @@ public class UserRepository : IUserRepository
         return await _context.Users.ToListAsync();
     }
 
-    public async Task<UserDto> GetUserByIdAsync(string id)
+    public async Task<User?> GetUserByIdAsync(string id)
     {
         var user = await _context.Users
             .Include(u => u.ShippingAddres)
             .FirstOrDefaultAsync(u => u.Id == id)
             ?? throw new Exception("User not found");
 
-        return UserMapper.MapToDto(user);
+        return user;
     }
 
     public async Task<bool> UpdateUserAsync(User user, EditUserDto editUserDto)
@@ -163,11 +163,6 @@ public class UserRepository : IUserRepository
         return true;
     }
 
-    public async Task<IList<string>> GetRoleAsync(User user)
-    {
-        return await _userManager.GetRolesAsync(user);
-    }
-
     public async Task<bool> ChangeUserState(User user, bool userStatus)
     {
         if(user == null)
@@ -180,5 +175,18 @@ public class UserRepository : IUserRepository
         await _context.SaveChangesAsync();
 
         return true;
+    }
+
+    public async Task<User?> GetUserByEmail(string email)
+    {
+        var user = await _context.Users.Where(u => u.Email == email)
+                                            .FirstOrDefaultAsync();
+
+        return user;
+    }
+
+    public async Task<IList<string>> GetRoleAsync(User user)
+    {
+        return await _userManager.GetRolesAsync(user);
     }
 }
