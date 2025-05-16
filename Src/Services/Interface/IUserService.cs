@@ -15,8 +15,9 @@ namespace e_commerce_blackcat_api.Src.Services.Interface
     {
         Task<IEnumerable<UserDto>> GetUsers();
         Task<IEnumerable<UserDto>> SearchUsers(string query);
-        Task<bool> EditUser(User user, EditUserDto editUserDto);
-        Task<bool> DeleteUser(User user);
+        Task<bool> ChangeUserState(ClaimsPrincipal userClaims, bool userState);
+        Task<bool> EditUser(ClaimsPrincipal userClaims, EditUserDto editUserDto);
+        Task<bool> DeleteUser(ClaimsPrincipal userClaims);
         Task<bool> ChangeUserPassword(ClaimsPrincipal userClaims, ChangePasswordDto changePasswordDto);
 
     }
