@@ -39,9 +39,30 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
                 return false;
             }
 
-            await _userRepository.ChangePassword(_mapperService.UserDtoToUser(user), changePasswordDto.OldPassword, changePasswordDto.NewPassword);
+            await _userRepository.ChangePassword(user, changePasswordDto.OldPassword, changePasswordDto.NewPassword);
 
             return true;
+        }
+
+        public async Task<bool> ChangeUserState(User user, bool userState)
+        {
+            if(user == null)
+            {
+                throw new Exception("El usuario no existe.");
+            }
+
+            var role = await _userRepository.GetRoleAsync(user);
+            if(role == null)
+            {
+                throw new Exception("Error en el servidor.");
+            }
+            if(role.Contains("Administrador"))
+            {
+                throw new Exception("No se puede cambiar el estado del administrador.");
+            }
+
+            var result = await _userRepository.ChangeUserState(user, userState);
+            return result;
         }
 
         public Task<bool> DeleteUser(User user)
@@ -49,9 +70,22 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
             throw new NotImplementedException();
         }
 
-        public Task<bool> EditUser(User user, EditUserDto editUserDto)
+        public async Task<bool> EditUser(ClaimsPrincipal userClaims, EditUserDto editUserDto)
         {
-            throw new NotImplementedException();
+            var userId = userClaims.FindFirstValue(ClaimTypes.NameIdentifier);
+            if(string.IsNullOrEmpty(userId))
+            {
+                return false;
+            }
+
+            var user = await _userRepository.GetUserByIdAsync(userId);
+            if(user == null)
+            {
+                return false;
+            }
+
+            var result = await _userRepository.UpdateUserAsync(user, editUserDto);
+            return result;
         }
 
         public async Task<IEnumerable<UserDto>> GetUsers()
