@@ -1,6 +1,5 @@
 using e_commerce_blackcat_api.Src.Models;
 using e_commerce_blackcat_api.Src.Dtos;
-using e_commerce_blackcat_api.Interfaces;
 
 namespace e_commerce_blackcat_api.Interfaces;
 
@@ -16,6 +15,7 @@ public interface IUserRepository
     Task<bool> UpdateShippingAddressAsync(UserDto userDto);
     Task<IList<string>> GetRoleAsync(User user);
     Task<bool> DeleteUserAsync(User user, ShippingAddres? shippingAddress);
+    Task<bool> ChangeUserState(User user, bool userStatus);
     Task<bool> ChangePassword(User user, string currentPassword, string newPassword);
 
 }
