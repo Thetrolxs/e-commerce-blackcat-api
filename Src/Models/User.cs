@@ -7,8 +7,7 @@ namespace e_commerce_blackcat_api.Src.Models
     // Usuario identity con nombre completo
     public class User : IdentityUser
     {
-        public required string FirstName {get; set;} 
-        public required string LastName {get; set;}
+        public required string FullName {get; set;}
         // Fecha en la que se registro el usuario
         public DateTime UserRegister {get; set;}
         // Ultimo acceso a la cuenta del usuario

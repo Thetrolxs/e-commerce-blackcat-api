@@ -69,8 +69,7 @@ public class UserRepository : IUserRepository
             return false;
         }
 
-        existingUser.FirstName = editUserDto.FirstName ?? existingUser.FirstName;
-        existingUser.LastName = editUserDto.LastName ?? existingUser.LastName;
+        existingUser.FullName = editUserDto.FullName ?? existingUser.FullName;
         existingUser.Email = editUserDto.Email ?? existingUser.Email;
         existingUser.PhoneNumber = editUserDto.PhoneNumber ?? existingUser.PhoneNumber;
         existingUser.Birthday = editUserDto.Birthday ?? existingUser.Birthday;
@@ -123,8 +122,7 @@ public class UserRepository : IUserRepository
     public async Task<IEnumerable<User>> SearchUser(string query)
     {
         var users = await _context.Users.Where(u => u.Id.ToString().Contains(query)
-                                        || u.FirstName.Contains(query)
-                                        || u.LastName.Contains(query)
+                                        || u.FullName.Contains(query)
                                         || (u.Email != null && u.Email.Contains(query)))
                                         .ToListAsync();
 
