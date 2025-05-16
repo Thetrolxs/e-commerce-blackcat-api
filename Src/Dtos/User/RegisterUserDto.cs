@@ -16,9 +16,9 @@ namespace e_commerce_blackcat_api.Src.Dtos.User
         [MaxLength(255, ErrorMessage = "El Nombre debe tener a lo más 255 caracteres.")]
         public string FullName { get; set; } = string.Empty;
 
-             
+
         [Required(ErrorMessage = "La Fecha de Nacimiento es obligatoria.")]
-        [DataType(DataType.Date)]  
+        [DataType(DataType.Date)]
         [DateValidation]
         public string Birthday { get; set; } = string.Empty;
 
@@ -37,6 +37,12 @@ namespace e_commerce_blackcat_api.Src.Dtos.User
         public string Password { get; set; } = string.Empty;
 
         [Compare("Password", ErrorMessage = "Las Contraseñas no coinciden.")]
-        public string ConfirmPassword { get; set; } = string.Empty;        
+        public string ConfirmPassword { get; set; } = string.Empty;    
+
+        public required string? Street { get; set; }
+        public required string? Number { get; set; }
+        public required string? Commune {get; set;}
+        public required string? Region { get; set; }
+        public required string? PostalCode { get; set; }    
     }
 }
