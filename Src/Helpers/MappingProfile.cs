@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using e_commerce_blackcat_api.Src.Dtos;
+using e_commerce_blackcat_api.Src.Dtos.User;
 using e_commerce_blackcat_api.Src.Models;
 
 namespace e_commerce_blackcat_api.Src.Helpers
@@ -16,6 +17,7 @@ namespace e_commerce_blackcat_api.Src.Helpers
         {
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
+            CreateMap<User, UserPageDto>();
         }
     }
 }
