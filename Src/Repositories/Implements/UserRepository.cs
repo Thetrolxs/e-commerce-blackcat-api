@@ -161,15 +161,21 @@ public class UserRepository : IUserRepository
         return true;
     }
 
-    public async Task<bool> ChangeUserState(User user, bool userStatus)
+    public async Task<bool> ChangeUserState(User user, bool userStatus, string reason)
     {
         if(user == null)
         {
             return false;
         }
 
+        if (string.IsNullOrEmpty(reason))
+        {
+            reason = "Contactar con el administrador.";
+        }
+
         user.IsActive = userStatus;
         _context.Entry(user).State = EntityState.Modified;
+        user.DesactivationReason = reason;
         await _context.SaveChangesAsync();
 
         return true;

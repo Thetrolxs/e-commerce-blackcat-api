@@ -17,7 +17,7 @@ public interface IUserRepository
     Task<IList<string>> GetRoleAsync(User user);
     Task<(List<User>, int total)> GetPagedUserAsync(int page, int pageSize);
     Task<bool> DeleteUserAsync(User user, ShippingAddres? shippingAddress);
-    Task<bool> ChangeUserState(User user, bool userStatus);
+    Task<bool> ChangeUserState(User user, bool userStatus, string reason);
     Task<bool> ChangePassword(User user, string currentPassword, string newPassword);
 
 }
