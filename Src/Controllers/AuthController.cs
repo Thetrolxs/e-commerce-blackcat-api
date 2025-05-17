@@ -1,32 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace e_commerce_blackcat_api.Src.Controllers
+namespace e_commerce_blackcat_api.Src.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class AuthController : ControllerBase
 {
-    [Route("[controller]")]
-    public class AuthController : Controller
+    private readonly ILogger<AuthController> _logger;
+
+    public AuthController(ILogger<AuthController> logger)
     {
-        private readonly ILogger<AuthController> _logger;
+        _logger = logger;
+    }
 
-        public AuthController(ILogger<AuthController> logger)
-        {
-            _logger = logger;
-        }
+    [HttpGet]
+    public IActionResult Index()
+    {
+        return Ok("Auth endpoint is working");
+    }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View("Error!");
-        }
+    [HttpGet("error")]
+    public IActionResult Error()
+    {
+        return BadRequest("An error occurred");
     }
 }
