@@ -187,4 +187,18 @@ public class UserRepository : IUserRepository
     {
         return await _userManager.GetRolesAsync(user);
     }
+
+    public async Task<(List<User>, int total)> GetPagedUserAsync(int page, int pageSize)
+    {
+        var query = _userManager.Users.AsQueryable();
+
+        var total = await query.CountAsync();
+
+        var users = await query
+                            .Skip((page - 1) * pageSize)
+                            .Take(pageSize)
+                            .ToListAsync();
+
+        return (users, total);
+    }
 }
