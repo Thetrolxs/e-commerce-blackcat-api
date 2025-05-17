@@ -2,9 +2,10 @@ using System.Threading.Tasks;
 
 namespace e_commerce_blackcat_api.Interfaces;
 
-public interface IUnitOfWork
+public interface IUnitOfWork : IDisposable
 {
     IProductRepository Products { get; }
+    IUserRepository Users { get; }
 
-    Task<int> CompleteAsync();
+    Task<bool> CompleteAsync();
 }
