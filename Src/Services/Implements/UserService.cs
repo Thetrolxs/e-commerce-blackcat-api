@@ -17,11 +17,11 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unit;
         private readonly IMapperService _mapperService;
 
-        public UserService(IUserRepository userRepository, IMapperService mapperService){
-            _userRepository = userRepository;
+        public UserService(IUnitOfWork unitOfWork, IMapperService mapperService){
+            _unit = unitOfWork;
             _mapperService = mapperService;
         }
 
@@ -34,25 +34,25 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
                 return false;
             }
 
-            var user = await _userRepository.GetUserByIdAsync(userId);
+            var user = await _unit.Users.GetUserByIdAsync(userId);
             if(user == null)
             {
                 return false;
             }
 
-            await _userRepository.ChangePassword(user, changePasswordDto.OldPassword, changePasswordDto.NewPassword);
+            await _unit.Users.ChangePassword(user, changePasswordDto.OldPassword, changePasswordDto.NewPassword);
 
             return true;
         }
 
-        public async Task<bool> ChangeUserState(User user, bool userState)
+        public async Task<bool> ChangeUserState(User user, bool userState, string reason)
         {
             if(user == null)
             {
                 throw new Exception("El usuario no existe.");
             }
 
-            var role = await _userRepository.GetRoleAsync(user);
+            var role = await _unit.Users.GetRoleAsync(user);
             if(role == null)
             {
                 throw new Exception("Error en el servidor.");
@@ -62,7 +62,7 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
                 throw new Exception("No se puede cambiar el estado del administrador.");
             }
 
-            var result = await _userRepository.ChangeUserState(user, userState);
+            var result = await _unit.Users.ChangeUserState(user, userState, reason);
             return result;
         }
 
@@ -79,13 +79,13 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
                 return false;
             }
 
-            var user = await _userRepository.GetUserByIdAsync(userId);
+            var user = await _unit.Users.GetUserByIdAsync(userId);
             if(user == null)
             {
                 return false;
             }
 
-            var result = await _userRepository.UpdateUserAsync(user, editUserDto);
+            var result = await _unit.Users.UpdateUserAsync(user, editUserDto);
             return result;
         }
 
@@ -93,10 +93,10 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
         {
             const int pageSize = 20;
 
-            var (users, total) = await _userRepository.GetPagedUserAsync(page, pageSize);
+            var (users, total) = await _unit.Users.GetPagedUserAsync(page, pageSize);
 
             var usersInPage = _mapperService.UserToUserPage(users);
-            
+
             var result = new PageResultDto<UserPageDto>
             {
                 CurrentPage = page,
@@ -110,14 +110,14 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
 
         public async Task<IEnumerable<UserDto>> GetUsers()
         {
-            var users = await _userRepository.GetAllUsersAsync();
+            var users = await _unit.Users.GetAllUsersAsync();
             var mappedUser = _mapperService.MapUsers(users);
             return mappedUser;
         }
 
         public async Task<IEnumerable<UserDto>> SearchUsers(string query)
         {
-            var users = await _userRepository.SearchUser(query);
+            var users = await _unit.Users.SearchUser(query);
             var mappedUser = _mapperService.MapUsers(users);
             return mappedUser;
         }
