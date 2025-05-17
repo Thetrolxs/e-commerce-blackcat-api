@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using e_commerce_blackcat_api.Interfaces;
 using e_commerce_blackcat_api.Src.Dtos;
+using e_commerce_blackcat_api.Src.Dtos.User;
 using e_commerce_blackcat_api.Src.Models;
 using e_commerce_blackcat_api.Src.Services.Interface;
 
@@ -85,6 +86,25 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
             }
 
             var result = await _userRepository.UpdateUserAsync(user, editUserDto);
+            return result;
+        }
+
+        public async Task<PageResultDto<UserPageDto>> GetPagedUserAsync(int page)
+        {
+            const int pageSize = 20;
+
+            var (users, total) = await _userRepository.GetPagedUserAsync(page, pageSize);
+
+            var usersInPage = _mapperService.UserToUserPage(users);
+            
+            var result = new PageResultDto<UserPageDto>
+            {
+                CurrentPage = page,
+                TotalCount = total,
+                TotalPages = (int)Math.Ceiling(total / (double)pageSize),
+                Items = usersInPage
+            };
+
             return result;
         }
 
