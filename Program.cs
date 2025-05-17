@@ -15,6 +15,9 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
     
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -24,6 +27,9 @@ builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<Data
 var app = builder.Build();
 
 DbInitializer.InitDb(app);
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapControllers();
 
