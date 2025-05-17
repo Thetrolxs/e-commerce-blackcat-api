@@ -9,7 +9,7 @@ namespace e_commerce_blackcat_api.Src.Models
     {
         public required string FullName {get; set;}
         // Fecha en la que se registro el usuario
-        public DateTime UserRegister {get; set;}
+        public DateTime UserRegister { get; set; } = DateTime.UtcNow;
         // Ultimo acceso a la cuenta del usuario
         public DateTime? LastAccess {get; set;}
         public DateTime Birthday {get; set;}
