@@ -61,12 +61,7 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
 
             return LoggedUserDto;
         }
-
-        public Task Logout()
-        {
-            return Task.CompletedTask;
-        }
-
+        
         public async Task<LoggedUserDto> RegisterUser(RegisterUserDto registerUserDto)
         {
             var mappedUser = _mapperService.RegisterClientDtoToUser(registerUserDto);

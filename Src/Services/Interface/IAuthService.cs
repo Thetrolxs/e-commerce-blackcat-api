@@ -11,6 +11,5 @@ namespace e_commerce_blackcat_api.Src.Services.Interface
     {
         Task<LoggedUserDto> RegisterUser(RegisterUserDto registerUserDto);
         Task<LoggedUserDto> Login(LoginUserDto loginUserDto);
-        Task Logout();   
     }
 }
