@@ -11,11 +11,20 @@ namespace e_commerce_blackcat_api.Src.Controllers
     {
         private readonly IAuthService _authService;
 
+        /// <summary>
+        /// Constructor del controlador de autenticación.
+        /// </summary>
+        /// <param name="authService">Servicio de autenticación.</param>
         public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
 
+        /// <summary>
+        /// Inicia sesión para un usuario.
+        /// </summary>
+        /// <param name="loginUserDto">Credenciales del usuario.</param>
+        /// <returns>Usuario logueado con el token generado.</returns>
         [HttpPost("login")]
         public async Task<ActionResult<LoggedUserDto>> Login(LoginUserDto loginUserDto)
         {
@@ -34,6 +43,11 @@ namespace e_commerce_blackcat_api.Src.Controllers
             }
         }
 
+        /// <summary>
+        /// Registra un nuevo usuario.
+        /// </summary>
+        /// <param name="registerUserDto">Datos del usuario a registrar.</param>
+        /// <returns>Usuario registrado con sus credenciales.</returns>
         [HttpPost("register")]
         public async Task<ActionResult<LoggedUserDto>> Register(RegisterUserDto registerUserDto)
         {
