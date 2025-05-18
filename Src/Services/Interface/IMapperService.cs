@@ -9,6 +9,8 @@ namespace e_commerce_blackcat_api.Src.Services.Interface
         public IEnumerable<UserDto> MapUsers(IEnumerable<User> users);
         public UserDto UserToUserDto(User user);
         public User UserDtoToUser(UserDto userDto);
+        public User RegisterClientDtoToUser(RegisterUserDto registerUserDto);
+
         public List<UserPageDto> UserToUserPage(List<User> users);
 
     }
