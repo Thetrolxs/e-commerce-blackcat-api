@@ -1,126 +1,77 @@
+using Microsoft.EntityFrameworkCore;
 using e_commerce_blackcat_api.Data;
 using e_commerce_blackcat_api.Interfaces;
 using e_commerce_blackcat_api.Models;
-using Microsoft.EntityFrameworkCore;
-using e_commerce_blackcat_api.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace e_commerce_blackcat_api.Repositories;
 
-public class ProductRepository(DataContext context, ILogger<Product> logger) : IProductRepository
+public class ProductRepository : IProductRepository
 {
-    private readonly DataContext _context = context;
-    private readonly ILogger<Product> _logger = logger;
+    private readonly DataContext _context;
+    private readonly ILogger<ProductRepository> _logger;
 
-    public async Task AddAsync(Product product)
+    public ProductRepository(DataContext context, ILogger<ProductRepository> logger)
+    {
+        _context = context;
+        _logger = logger;
+    }
+
+    public async Task<IEnumerable<Product>> GetProductsAsync()
+    {
+        var products = await _context.Products.ToListAsync();
+
+        if (products == null || !products.Any())
+        {
+            _logger.LogWarning("No products found in the database.");
+            throw new Exception("No products found");
+        }
+
+        return products;
+    }
+
+    public async Task<Product> GetProductByIdAsync(int id)
+    {
+        var product = await _context.Products.FindAsync(id);
+
+        if (product == null)
+        {
+            _logger.LogError("Product with ID {ProductId} not found", id);
+            throw new Exception("Product not found");
+        }
+
+        return product;
+    }
+
+    public async Task AddProductAsync(Product product)
     {
         await _context.Products.AddAsync(product);
     }
 
-    public void Delete(Product product)
+    public void DeleteProductAsync(Product product)
     {
         _context.Products.Remove(product);
     }
 
-    public async Task<Product?> GetByIdAsync(int id)
+    public async Task UpdateProductAsync(Product updatedProduct)
     {
-        return await _context.Products.FindAsync(id)
-            ?? throw new Exception("Product not found");
-    }
+        var existingProduct = await _context.Products.FindAsync(updatedProduct.Id);
 
-    public async Task<IEnumerable<Product>> GetAllAsync()
-    {
-        return await _context.Products.ToListAsync()
-            ?? throw new Exception("No products found");
-    }
+        if (existingProduct == null)
+        {
+            _logger.LogError("Cannot update. Product with ID {ProductId} not found", updatedProduct.Id);
+            throw new Exception("Product not found");
+        }
 
-    public IQueryable<Product> GetQueryableProducts()
-    {
-        return _context.Products.AsQueryable();
-    }
-
-    public async Task Update(Product product)
-    {
-        var existingProduct = await _context.Products.FindAsync(product.Id)
-            ?? throw new Exception("Product not found");
-
-        existingProduct.Title = product.Title;
-        existingProduct.Description = product.Description;
-        existingProduct.Price = product.Price;
-        existingProduct.Stock = product.Stock;
-        existingProduct.Category = product.Category;
-        existingProduct.Brand = product.Brand;
-        existingProduct.IsNew = product.IsNew;
-        existingProduct.CreatedAt = product.CreatedAt;
+        existingProduct.Title = updatedProduct.Title;
+        existingProduct.Description = updatedProduct.Description;
+        existingProduct.Price = updatedProduct.Price;
+        existingProduct.Stock = updatedProduct.Stock;
+        existingProduct.Category = updatedProduct.Category;
+        existingProduct.Brand = updatedProduct.Brand;
+        existingProduct.IsNew = updatedProduct.IsNew;
+        existingProduct.CreatedAt = updatedProduct.CreatedAt;
 
         _context.Products.Update(existingProduct);
     }
-
-    public async Task<PagedResult<Product>> GetPagedProductsAsync(ProductParams queryParams)
-{
-    var query = _context.Products.AsQueryable();
-
-    // Filtro: búsqueda por título o descripción
-    if (!string.IsNullOrWhiteSpace(queryParams.Search))
-    {
-        query = query.Where(p =>
-            p.Title.ToLower().Contains(queryParams.Search.ToLower()) ||
-            p.Description.ToLower().Contains(queryParams.Search.ToLower()));
-    }
-
-    // Filtro: categoría
-    if (!string.IsNullOrWhiteSpace(queryParams.Category))
-    {
-        query = query.Where(p => p.Category.ToLower() == queryParams.Category.ToLower());
-    }
-
-    // Filtro: marca
-    if (!string.IsNullOrWhiteSpace(queryParams.Brand))
-    {
-        query = query.Where(p => p.Brand.ToLower() == queryParams.Brand.ToLower());
-    }
-
-    // Filtro: estado de novedad
-    if (queryParams.IsNew.HasValue)
-    {
-        query = query.Where(p => p.IsNew == queryParams.IsNew.Value);
-    }
-
-    // Filtro: rango de precios
-    if (queryParams.MinPrice.HasValue)
-    {
-        query = query.Where(p => p.Price >= queryParams.MinPrice.Value);
-    }
-
-    if (queryParams.MaxPrice.HasValue)
-    {
-        query = query.Where(p => p.Price <= queryParams.MaxPrice.Value);
-    }
-
-    // Ordenamiento
-    query = queryParams.Sort?.ToLower() switch
-    {
-        "price" => query.OrderBy(p => p.Price),
-        "price_desc" => query.OrderByDescending(p => p.Price),
-        "title" => query.OrderBy(p => p.Title),
-        "title_desc" => query.OrderByDescending(p => p.Title),
-        _ => query.OrderBy(p => p.Id) // orden por defecto
-    };
-
-    // Total antes de paginar
-    var totalCount = await query.CountAsync();
-
-    // Paginación
-    var products = await query
-        .Skip((queryParams.PageNumber - 1) * queryParams.ValidatedPageSize)
-        .Take(queryParams.ValidatedPageSize)
-        .ToListAsync();
-
-    return new PagedResult<Product>
-    {
-        Items = products,
-        TotalCount = totalCount,
-        PageNumber = queryParams.PageNumber,
-        PageSize = queryParams.ValidatedPageSize
-    };
-}
 }
