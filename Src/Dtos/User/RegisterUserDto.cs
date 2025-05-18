@@ -39,10 +39,10 @@ namespace e_commerce_blackcat_api.Src.Dtos.User
         [Compare("Password", ErrorMessage = "Las Contraseñas no coinciden.")]
         public string ConfirmPassword { get; set; } = string.Empty;    
 
-        public required string? Street { get; set; }
-        public required string? Number { get; set; }
-        public required string? Commune {get; set;}
-        public required string? Region { get; set; }
-        public required string? PostalCode { get; set; }    
+        public string? Street { get; set; }
+        public string? Number { get; set; }
+        public string? Commune {get; set;}
+        public string? Region { get; set; }
+        public string? PostalCode { get; set; }    
     }
 }
