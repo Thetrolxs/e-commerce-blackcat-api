@@ -35,7 +35,7 @@ namespace e_commerce_blackcat_api.Src.Controllers
         /// Filtros avanzados para búsqueda de usuarios
         /// </summary>
         [Authorize(Roles = "Administrador")]
-        [HttpGet("filter")]
+        [HttpPost("filter")]
         public async Task<IActionResult> GetFilteredUsers([FromBody] UserFilterDto filters)
         {
             if (!ModelState.IsValid)
