@@ -2,7 +2,6 @@ using e_commerce_blackcat_api.Data;
 using e_commerce_blackcat_api.Interfaces;
 using e_commerce_blackcat_api.Src.Models;
 using e_commerce_blackcat_api.Src.Dtos;
-using e_commerce_blackcat_api.Src.Mappers;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
