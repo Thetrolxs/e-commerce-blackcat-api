@@ -66,11 +66,6 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
             return result;
         }
 
-        public Task<bool> DeleteUser(User user)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<bool> EditUser(ClaimsPrincipal userClaims, EditUserDto editUserDto)
         {
             var userId = userClaims.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -106,6 +101,20 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
             };
 
             return result;
+        }
+
+        public async Task<UserDto> GetUser(ClaimsPrincipal claimsPrincipal)
+        {
+            var userId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _unit.Users.GetUserByIdAsync(userId!);
+            if (user is null)
+            {
+                throw new KeyNotFoundException("Usuario no encontrado.");
+            }
+
+            var mappedUserDto = _mapperService.UserToUserDto(user);
+
+            return mappedUserDto;
         }
 
         public async Task<IEnumerable<UserDto>> GetUsers()
