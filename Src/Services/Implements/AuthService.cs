@@ -61,7 +61,6 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
 
             return LoggedUserDto;
         }
-        
         public async Task<LoggedUserDto> RegisterUser(RegisterUserDto registerUserDto)
         {
             var mappedUser = _mapperService.RegisterClientDtoToUser(registerUserDto);
@@ -100,7 +99,7 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
 
             foreach (var role in roles)
@@ -112,6 +111,8 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
+                issuer: _configuration["JwtSettings:Issuer"],
+                audience: _configuration["JwtSettings:Audience"],
                 claims: claims,
                 expires: DateTime.Now.AddHours(2),
                 signingCredentials: creds
