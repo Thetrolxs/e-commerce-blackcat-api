@@ -3,6 +3,7 @@ using e_commerce_blackcat_api.Models;
 using e_commerce_blackcat_api.Src.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Bogus.DataSets;
 
 namespace e_commerce_blackcat_api.Data;
 
@@ -65,9 +66,12 @@ public static class DbInitializer
         {
             adminUser = new User
             {
+                UserName = adminEmail,
                 Email = adminEmail,
                 FullName = "Ignacio Mancilla",
                 PhoneNumber = "1234567890",
+                Birthday = new DateTime(2000, 10, 25),
+                UserRegister = DateTime.UtcNow,
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
                 IsActive = true,
