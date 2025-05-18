@@ -45,11 +45,18 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
             return true;
         }
 
-        public async Task<bool> ChangeUserState(User user, bool userState, string reason)
+        public async Task<bool> ChangeUserState(string id, bool userState, string reason)
         {
-            if(user == null)
+            if(string.IsNullOrEmpty(id))
             {
-                throw new Exception("El usuario no existe.");
+                throw new Exception("No existe la id.");
+            }
+
+            var user = await _unit.Users.GetUserByIdAsync(id);
+
+            if (user is null)
+            {
+                throw new KeyNotFoundException("Usuario no encontrado.");
             }
 
             var role = await _unit.Users.GetRoleAsync(user);
