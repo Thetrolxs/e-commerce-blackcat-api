@@ -10,7 +10,7 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly DataContext _context;
 
-    public IProductRepository Products { get; }
+    public IProductRepository ProductRepository { get; }
 
     public IUserRepository Users { get; }
 
@@ -20,7 +20,7 @@ public class UnitOfWork : IUnitOfWork
     public UnitOfWork(DataContext context, IProductRepository productRepository, IUserRepository userRepository, UserManager<User> userManager, SignInManager<User> signInManager)
     {
         _context = context;
-        Products = productRepository;
+        ProductRepository = productRepository;
         Users = userRepository;
         UserManager = userManager;
         SignInManager = signInManager;

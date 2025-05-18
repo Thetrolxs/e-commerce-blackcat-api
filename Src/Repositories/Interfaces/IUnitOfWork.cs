@@ -8,7 +8,9 @@ namespace e_commerce_blackcat_api.Interfaces;
 
 public interface IUnitOfWork : IDisposable
 {
-    IProductRepository Products { get; }
+    // ... other repository properties or methods
+
+    IProductRepository ProductRepository { get; }
     IUserRepository Users { get; }
     UserManager<User> UserManager { get; }
     SignInManager<User> SignInManager { get; }
