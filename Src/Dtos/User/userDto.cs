@@ -6,6 +6,7 @@ public class UserDto
     public required string FullName { get; set; }
     public required string Email { get; set; }
     public required string PhoneNumber { get; set; }
+    public DateTime Birthday { get; set; }
 
     public string? Street { get; set; }
     public string? Number { get; set; }
