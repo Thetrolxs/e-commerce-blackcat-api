@@ -15,7 +15,9 @@ namespace e_commerce_blackcat_api.Src.Services.Interface
     public interface IUserService
     {
         Task<IEnumerable<UserDto>> GetUsers();
-        Task<IEnumerable<UserDto>> SearchUsers(string query);
+        Task<IEnumerable<UserDto>> SearchUser(string query);
+        Task<PageResultDto<UserPageDto>> GetFilteredUsersAsync(UserFilterDto filters);
+        Task<UserDetailDto> GetUserDetailAsync(string userId);
         Task<PageResultDto<UserPageDto>> GetPagedUserAsync(int page);
         Task<UserDto> GetUser(ClaimsPrincipal claimsPrincipal);
         Task<bool> ChangeUserState(string id, bool userState, string reason);

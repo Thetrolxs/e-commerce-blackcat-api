@@ -20,7 +20,8 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
         private readonly IUnitOfWork _unit;
         private readonly IMapperService _mapperService;
 
-        public UserService(IUnitOfWork unitOfWork, IMapperService mapperService){
+        public UserService(IUnitOfWork unitOfWork, IMapperService mapperService)
+        {
             _unit = unitOfWork;
             _mapperService = mapperService;
         }
@@ -35,7 +36,7 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
             }
 
             var user = await _unit.Users.GetUserByIdAsync(userId);
-            if(user == null)
+            if (user == null)
             {
                 return false;
             }
@@ -47,7 +48,7 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
 
         public async Task<bool> ChangeUserState(string id, bool userState, string reason)
         {
-            if(string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id))
             {
                 throw new Exception("No existe la id.");
             }
@@ -60,11 +61,11 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
             }
 
             var role = await _unit.Users.GetRoleAsync(user);
-            if(role == null)
+            if (role == null)
             {
                 throw new Exception("Error en el servidor.");
             }
-            if(role.Contains("Administrador"))
+            if (role.Contains("Administrador"))
             {
                 throw new Exception("No se puede cambiar el estado del administrador.");
             }
@@ -76,13 +77,13 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
         public async Task<bool> EditUser(ClaimsPrincipal userClaims, EditUserDto editUserDto)
         {
             var userId = userClaims.FindFirstValue(ClaimTypes.NameIdentifier);
-            if(string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(userId))
             {
                 return false;
             }
 
             var user = await _unit.Users.GetUserByIdAsync(userId);
-            if(user == null)
+            if (user == null)
             {
                 return false;
             }
@@ -131,7 +132,33 @@ namespace e_commerce_blackcat_api.Src.Services.Implements
             return mappedUser;
         }
 
-        public async Task<IEnumerable<UserDto>> SearchUsers(string query)
+        public async Task<PageResultDto<UserPageDto>> GetFilteredUsersAsync(UserFilterDto filters)
+        {
+            const int pageSize = 20;
+            var (users, total) = await _unit.Users.GetUsersWithFiltersAsync(filters, pageSize);
+            var mapped = _mapperService.UserToUserPage(users);
+
+            return new PageResultDto<UserPageDto>
+            {
+                CurrentPage = filters.Page,
+                TotalCount = total,
+                TotalPages = (int)Math.Ceiling(total / (double)pageSize),
+                Items = mapped
+            };
+        }
+
+        public async Task<UserDetailDto> GetUserDetailAsync(string userId)
+        {
+            var user = await _unit.Users.GetUserByIdAsync(userId);
+            if (user is null)
+            {
+                throw new KeyNotFoundException("Usuario no encontrado.");
+            }
+
+            return _mapperService.UserToUserDetailDto(user);
+        }
+
+        public async Task<IEnumerable<UserDto>> SearchUser(string query)
         {
             var users = await _unit.Users.SearchUser(query);
             var mappedUser = _mapperService.MapUsers(users);
