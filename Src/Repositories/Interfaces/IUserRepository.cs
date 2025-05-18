@@ -11,7 +11,7 @@ public interface IUserRepository
     Task<User?> GetUserByEmail(string email);
     Task<bool> VerifyEmail(string email);
     Task<bool> VerifyUser(User user);
-    Task<bool> CreateUserAsync(User user, ShippingAddres? shippingAddress);
+    Task<bool> CreateUserAsync(User user);
     Task<bool> UpdateUserAsync(User user, EditUserDto editUserDto);
     Task<bool> UpdateShippingAddressAsync(UserDto userDto);
     Task<IList<string>> GetRoleAsync(User user);

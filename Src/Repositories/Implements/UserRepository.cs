@@ -20,13 +20,9 @@ public class UserRepository : IUserRepository
         _userManager = userManager;
     }
 
-    public async Task<bool> CreateUserAsync(User user, ShippingAddres? shippingAddress)
+    public async Task<bool> CreateUserAsync(User user)
     {
         await _context.Users.AddAsync(user);
-        if (shippingAddress != null)
-        {
-            await _context.ShippingAddres.AddAsync(shippingAddress);
-        }
         await _context.SaveChangesAsync();
         return true;
     }
