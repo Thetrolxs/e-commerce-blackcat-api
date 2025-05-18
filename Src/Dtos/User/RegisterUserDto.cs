@@ -31,7 +31,7 @@ namespace e_commerce_blackcat_api.Src.Dtos.User
         public string PhoneNumber { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "La Contraseña es obligatoria.")]
-        [RegularExpression(@"^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]+$", ErrorMessage = "La Contraseña debe ser alfanumérica.")]
+        [RegularExpression(@"^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*()_+=\[\]{};':"",./<>?\\|])[a-zA-Z0-9!@#$%^&*()_+=\[\]{};':"",./<>?\\|]+$", ErrorMessage = "La Contraseña debe contener al menos una letra, un número y un carácter especial.")]
         [MinLength(8, ErrorMessage = "La Contraseña debe tener al menos 8 caracteres.")]
         [MaxLength(20, ErrorMessage = "La Contraseña debe tener a lo más 20 caracteres.")]
         public string Password { get; set; } = string.Empty;
