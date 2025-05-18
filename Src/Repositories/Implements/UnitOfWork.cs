@@ -2,6 +2,8 @@ using e_commerce_blackcat_api.Data;
 using e_commerce_blackcat_api.Interfaces;
 using e_commerce_blackcat_api.Src.Models;
 
+using Microsoft.AspNetCore.Identity;
+
 namespace e_commerce_blackcat_api.Repositories;
 
 public class UnitOfWork : IUnitOfWork
@@ -12,11 +14,16 @@ public class UnitOfWork : IUnitOfWork
 
     public IUserRepository Users { get; }
 
-    public UnitOfWork(DataContext context, IProductRepository productRepository, IUserRepository userRepository)
+    public UserManager<User> UserManager { get; }
+    public SignInManager<User> SignInManager { get; }
+
+    public UnitOfWork(DataContext context, IProductRepository productRepository, IUserRepository userRepository, UserManager<User> userManager, SignInManager<User> signInManager)
     {
         _context = context;
         Products = productRepository;
         Users = userRepository;
+        UserManager = userManager;
+        SignInManager = signInManager;
     }
 
     public async Task<bool> CompleteAsync()
