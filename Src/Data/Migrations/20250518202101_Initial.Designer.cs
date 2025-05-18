@@ -8,10 +8,10 @@ using e_commerce_blackcat_api.Data;
 
 #nullable disable
 
-namespace e_commerce_blackcat_api.Src.Data.Migrations
+namespace e_commerce_blackcat_api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250517151245_Initial")]
+    [Migration("20250518202101_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

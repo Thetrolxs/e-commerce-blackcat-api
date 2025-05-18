@@ -7,7 +7,7 @@ using e_commerce_blackcat_api.Data;
 
 #nullable disable
 
-namespace e_commerce_blackcat_api.Src.Data.Migrations
+namespace e_commerce_blackcat_api.Migrations
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
