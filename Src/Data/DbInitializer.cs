@@ -3,6 +3,7 @@ using e_commerce_blackcat_api.Models;
 using e_commerce_blackcat_api.Src.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Bogus.DataSets;
 
 namespace e_commerce_blackcat_api.Data;
 
@@ -65,12 +66,15 @@ public static class DbInitializer
         {
             adminUser = new User
             {
-                UserName = "admin",
+                UserName = adminEmail,
                 Email = adminEmail,
                 FullName = "Ignacio Mancilla",
                 PhoneNumber = "1234567890",
+                Birthday = new DateTime(2000, 10, 25),
+                UserRegister = DateTime.UtcNow,
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
+                IsActive = true,
             };
             var result = userManager.CreateAsync(adminUser, adminPassword).Result;
             if (result.Succeeded)
@@ -83,13 +87,18 @@ public static class DbInitializer
         if (userManager.Users.Count() < 2)
         {
             var users = new Faker<User>("es")
-                .RuleFor(u => u.UserName, f => f.Internet.UserName())
-                .RuleFor(u => u.Email, f => f.Internet.Email())
                 .RuleFor(u => u.FullName, f => f.Name.FullName())
-                .RuleFor(u => u.PhoneNumber, f => f.Phone.PhoneNumber())
-                .RuleFor(u => u.EmailConfirmed, true)
-                .RuleFor(u => u.PhoneNumberConfirmed, true)
-                .Generate(10);
+                .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.FullName))
+                .RuleFor(u => u.UserName, (f, u) => u.Email)
+                .RuleFor(u => u.Birthday, f => f.Date.Past(40, DateTime.UtcNow.AddYears(-18))) // Edad entre 18-58
+                .RuleFor(u => u.UserRegister, f => f.Date.Past(2))
+                .RuleFor(u => u.LastAccess, f => f.Date.Recent(30))
+                .RuleFor(u => u.IsActive, f => f.Random.Bool(0.85f)) // 85% activos
+                .RuleFor(u => u.DesactivationReason, (f, u) => u.IsActive ? null : f.Lorem.Sentence())
+                .RuleFor(u => u.EmailConfirmed, f => true)
+                .RuleFor(u => u.PhoneNumber, f => f.Phone.PhoneNumber("9########"))
+                .RuleFor(u => u.PhoneNumberConfirmed, f => true)
+                .Generate(40);
 
             foreach (var user in users)
             {
