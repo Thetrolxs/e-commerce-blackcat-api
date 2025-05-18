@@ -5,6 +5,7 @@ using e_commerce_blackcat_api.Src.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using e_commerce_blackcat_api.Src.Dtos.User;
 
 namespace e_commerce_blackcat_api.Repositories;
 
@@ -123,11 +124,42 @@ public class UserRepository : IUserRepository
 
         return users;
     }
+    
+    public async Task<(List<User>, int)> GetUsersWithFiltersAsync(UserFilterDto filters, int pageSize)
+    {
+        var query = _context.Users.AsQueryable();
+
+        if (filters.IsActive.HasValue)
+            query = query.Where(u => u.IsActive == filters.IsActive);
+
+        if (!string.IsNullOrEmpty(filters.Email))
+            query = query.Where(u => u.Email!.Contains(filters.Email));
+
+        if (!string.IsNullOrEmpty(filters.NameOrLastName))
+            query = query.Where(u => u.FullName.Contains(filters.NameOrLastName));
+
+        if (filters.FromRegisterDate.HasValue)
+            query = query.Where(u => u.UserRegister >= filters.FromRegisterDate);
+
+        if (filters.ToRegisterDate.HasValue)
+            query = query.Where(u => u.UserRegister <= filters.ToRegisterDate);
+
+        var total = await query.CountAsync();
+
+        var users = await query
+            .OrderByDescending(u => u.UserRegister)
+            .Skip((filters.Page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (users, total);
+    }
 
     public async Task<bool> VerifyEmail(string email)
     {
         var user = await _context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
-        if(user == null){
+        if (user == null)
+        {
             return false;
         }
 

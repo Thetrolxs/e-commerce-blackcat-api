@@ -1,5 +1,6 @@
 using e_commerce_blackcat_api.Src.Models;
 using e_commerce_blackcat_api.Src.Dtos;
+using e_commerce_blackcat_api.Src.Dtos.User;
 
 namespace e_commerce_blackcat_api.Interfaces;
 
@@ -7,6 +8,7 @@ public interface IUserRepository
 {
     Task<IEnumerable<User>> GetAllUsersAsync();
     Task<IEnumerable<User>> SearchUser(string query);
+    Task<(List<User>, int)> GetUsersWithFiltersAsync(UserFilterDto filters, int pageSize);
     Task<User?> GetUserByIdAsync(string id);
     Task<User?> GetUserByEmail(string email);
     Task<bool> VerifyEmail(string email);
