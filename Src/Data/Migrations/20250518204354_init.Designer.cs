@@ -11,8 +11,8 @@ using e_commerce_blackcat_api.Data;
 namespace e_commerce_blackcat_api.Src.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250517151245_Initial")]
-    partial class Initial
+    [Migration("20250518204354_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
