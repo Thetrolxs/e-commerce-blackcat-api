@@ -19,6 +19,7 @@ namespace e_commerce_blackcat_api.Src.Helpers
             CreateMap<UserDto, User>();
             CreateMap<User, UserPageDto>();
             CreateMap<RegisterUserDto, User>();
+            CreateMap<User, UserDetailDto>();
         }
     }
 }

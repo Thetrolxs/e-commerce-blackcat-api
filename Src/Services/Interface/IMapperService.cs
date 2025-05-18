@@ -10,8 +10,8 @@ namespace e_commerce_blackcat_api.Src.Services.Interface
         public UserDto UserToUserDto(User user);
         public User UserDtoToUser(UserDto userDto);
         public User RegisterClientDtoToUser(RegisterUserDto registerUserDto);
+        public UserDetailDto UserToUserDetailDto(User user);
 
         public List<UserPageDto> UserToUserPage(List<User> users);
-
     }
 }
