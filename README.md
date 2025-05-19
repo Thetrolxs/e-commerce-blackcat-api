@@ -152,9 +152,6 @@ agregar el siguiente codigo en la carpeta principal del proyecto con nombre apps
 }
 
 ```
-
-La API se iniciará en `https://localhost:7195/` según lo definido en `appsettings.json`.
-
 ---
 ### 5. Ejecutar la aplicación
 
@@ -162,7 +159,7 @@ La API se iniciará en `https://localhost:7195/` según lo definido en `appsetti
 dotnet run
 ```
 
-La API se iniciará en `https://localhost:7195/` según lo definido en `launchSettings.json`.
+La API se iniciará en `https://localhost:7195/` según lo definido en `appsettings.json`.
 
 ---
 
