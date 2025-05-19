@@ -41,6 +41,7 @@ public static class DbInitializer
                 .RuleFor(p => p.CreatedAt, f => f.Date.Past())
                 .RuleFor(p => p.CartItems, f => new List<CartItem>())
                 .RuleFor(p => p.OrderDetails, f => new List<OrderDetail>())
+                .RuleFor(p => p.Image, f => f.Image.PicsumUrl())
                 .Generate(20);
 
             context.Products.AddRange(products);
