@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
+using e_commerce_blackcat_api.Src.Helpers;
+
 namespace e_commerce_blackcat_api.Src.Dtos;
 
 public class ProductCreateDto
@@ -24,4 +26,9 @@ public class ProductCreateDto
     public string Brand { get; set; } = string.Empty;
 
     public bool IsNew { get; set; }
+
+    [AllowedExtensionsAndMimeTypes(new[] { ".png", ".jpg", ".jpeg", "webp" }, new[] { "image/png", "image/jpeg", "image/jpg", "image/webp" })]
+    [MaxFileSize(100 * 1024 * 1024, ErrorMessage = "El tamaño máximo del archivo es 100 MB")]
+    public required IFormFile? Image { get; set; }
+
 }
