@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace e_commerce_blackcat_api.Src.Data.Migrations
+namespace e_commerce_blackcat_api.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

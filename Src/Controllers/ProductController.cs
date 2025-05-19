@@ -12,9 +12,9 @@ namespace e_commerce_blackcat_api.Src.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class productsController(ILogger<productsController> logger, IUnitOfWork unitOfWork) : ControllerBase
+public class ProductController(ILogger<ProductController> logger, IUnitOfWork unitOfWork) : ControllerBase
 {
-    private readonly ILogger<productsController> _logger = logger;
+    private readonly ILogger<ProductController> _logger = logger;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     [HttpGet]
@@ -66,7 +66,7 @@ public class productsController(ILogger<productsController> logger, IUnitOfWork 
 
         var product = dto.ToProductFromCreateDto();
         await _unitOfWork.ProductRepository.AddAsync(product);
-        var saved = await _unitOfWork.CompleteAsync() > 0;
+        var saved = await _unitOfWork.CompleteAsync() ;
 
         if (!saved)
             return StatusCode(500, new ApiResponse<ProductDto>(false, "No se pudo guardar el producto"));
@@ -84,7 +84,7 @@ public class productsController(ILogger<productsController> logger, IUnitOfWork 
 
         product.UpdateProductFromDto(dto);
         await _unitOfWork.ProductRepository.Update(product);
-        var saved = await _unitOfWork.CompleteAsync() > 0;
+        var saved = await _unitOfWork.CompleteAsync();
 
         if (!saved)
             return StatusCode(500, new ApiResponse<ProductDto>(false, "No se pudo actualizar el producto"));
@@ -101,7 +101,7 @@ public class productsController(ILogger<productsController> logger, IUnitOfWork 
             return NotFound(new ApiResponse<string>(false, "Producto no encontrado"));
 
         _unitOfWork.ProductRepository.Delete(product);
-        var saved = await _unitOfWork.CompleteAsync() > 0;
+        var saved = await _unitOfWork.CompleteAsync();
 
         if (!saved)
             return StatusCode(500, new ApiResponse<string>(false, "No se pudo eliminar el producto"));
