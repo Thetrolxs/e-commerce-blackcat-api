@@ -18,11 +18,12 @@ public static class ProductMapper
             Category = product.Category,
             Brand = product.Brand,
             IsNew = product.IsNew,
-            CreatedAt = product.CreatedAt
+            CreatedAt = product.CreatedAt,
+            Image = product.Image
         };
     }
 
-    public static Product ToProductFromCreateDto(this ProductCreateDto dto)
+    public static Product ToProductFromCreateDto(this ProductCreateDto dto, string imageUrl)
     {
         return new Product
         {
@@ -33,7 +34,8 @@ public static class ProductMapper
             Category = dto.Category,
             Brand = dto.Brand,
             IsNew = dto.IsNew,
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            Image = imageUrl
         };
     }
 
@@ -46,8 +48,5 @@ public static class ProductMapper
         product.Category = dto.Category;
         product.Brand = dto.Brand;
         product.IsNew = dto.IsNew;
-        
     }
-
-    
 }
