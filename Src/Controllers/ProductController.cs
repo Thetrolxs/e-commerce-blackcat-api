@@ -75,7 +75,7 @@ public class ProductController(ILogger<ProductController> logger, IUnitOfWork un
     }
 
     [Authorize(Roles = "Administrador")]
-    [HttpPut("{id}")]
+    [HttpPatch("{id}")]
     public async Task<ActionResult<ApiResponse<ProductDto>>> Update(int id, [FromBody] ProductUpdateDto dto)
     {
         var product = await _unitOfWork.ProductRepository.GetByIdAsync(id);
