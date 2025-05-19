@@ -91,7 +91,7 @@ dotnet ef database update
 ```bash
 dotnet tool install --global dotnet-ef
 ```
-### 4. Agregar el appSettings.json
+### 4. Agregar el appsettings.json
 agregar el siguiente codigo en la carpeta principal del proyecto con nombre appsettings.json
 ```bash
 {
@@ -153,14 +153,10 @@ agregar el siguiente codigo en la carpeta principal del proyecto con nombre apps
 
 ```
 
-```bash
-dotnet run
-```
-
-La API se iniciará en `https://localhost:7195/` según lo definido en `launchSettings.json`.
+La API se iniciará en `https://localhost:7195/` según lo definido en `appsettings.json`.
 
 ---
-### 4. Ejecutar la aplicación
+### 5. Ejecutar la aplicación
 
 ```bash
 dotnet run
