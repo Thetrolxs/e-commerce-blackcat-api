@@ -24,4 +24,5 @@ public class ProductUpdateDto
     public string Brand { get; set; } = string.Empty;
 
     public bool IsNew { get; set; }
+    public IFormFile? Image { get; set; }
 }

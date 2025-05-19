@@ -17,5 +17,6 @@ public class ProductDto
     public string Category { get; set; } = string.Empty;
     public string Brand { get; set; } = string.Empty;
     public bool IsNew { get; set; }
+    public string Image { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
 }
