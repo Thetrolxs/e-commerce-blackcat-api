@@ -35,13 +35,24 @@ namespace e_commerce_blackcat_api.Src.Controllers
         /// Filtros avanzados para búsqueda de usuarios
         /// </summary>
         [Authorize(Roles = "Administrador")]
-        [HttpPost("filter")]
-        public async Task<IActionResult> GetFilteredUsers([FromBody] UserFilterDto filters)
+        [HttpGet("filter")]
+        public async Task<IActionResult> GetFilteredUsers(
+            [FromQuery] bool? isActive,
+            [FromQuery] string? email,
+            [FromQuery] string? nameOrLastName,
+            [FromQuery] DateTime? fromRegisterDate,
+            [FromQuery] DateTime? toRegisterDate,
+            [FromQuery] int page = 1)
         {
-            if (!ModelState.IsValid)
+            var filters = new UserFilterDto
             {
-                return BadRequest(ModelState);
-            }
+                IsActive = isActive,
+                Email = email,
+                NameOrLastName = nameOrLastName,
+                FromRegisterDate = fromRegisterDate,
+                ToRegisterDate = toRegisterDate,
+                Page = page
+            };
 
             try
             {
