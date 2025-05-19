@@ -6,10 +6,9 @@ using e_commerce_blackcat_api.Helpers;
 
 namespace e_commerce_blackcat_api.Repositories;
 
-public class ProductRepository(DataContext context, ILogger<Product> logger) : IProductRepository
+public class ProductRepository(DataContext context) : IProductRepository
 {
     private readonly DataContext _context = context;
-    private readonly ILogger<Product> _logger = logger;
 
     public async Task AddAsync(Product product)
     {
@@ -33,11 +32,6 @@ public class ProductRepository(DataContext context, ILogger<Product> logger) : I
             ?? throw new Exception("No products found");
     }
 
-    public IQueryable<Product> GetQueryableProducts()
-    {
-        return _context.Products.AsQueryable();
-    }
-
     public async Task Update(Product product)
     {
         var existingProduct = await _context.Products.FindAsync(product.Id)
@@ -50,6 +44,7 @@ public class ProductRepository(DataContext context, ILogger<Product> logger) : I
         existingProduct.Category = product.Category;
         existingProduct.Brand = product.Brand;
         existingProduct.IsNew = product.IsNew;
+        existingProduct.Image = product.Image;
         existingProduct.CreatedAt = product.CreatedAt;
 
         _context.Products.Update(existingProduct);
