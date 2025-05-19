@@ -13,7 +13,7 @@ public class Product
     public string Brand { get; set; } = string.Empty;
     public bool IsNew { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public required string Image { get; set; }
+    public string? Image { get; set; }
 
     //Relaciones
     public ICollection<CartItem> CartItems { get; set; } = null!;
