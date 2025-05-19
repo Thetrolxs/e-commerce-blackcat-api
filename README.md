@@ -91,7 +91,75 @@ dotnet ef database update
 ```bash
 dotnet tool install --global dotnet-ef
 ```
+### 4. Agregar el appSettings.json
+agregar el siguiente codigo en la carpeta principal del proyecto con nombre appsettings.json
+```bash
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
 
+  "ConnectionStrings": {
+    "DefaultConnection": "Data Source=blackcat.db"
+  },
+
+  "JwtSettings": {
+    "Key": "ThisIsASecretKeyWith256BitMinimumLength1234", 
+    "Issuer": "ECommerceApi",
+    "Audience": "ECommerceClient",
+    "ExpiresInMinutes": 60
+  },
+
+  "CloudinarySettings": {
+    "CloudName": "tu-cloud-name",
+    "ApiKey": "tu-api-key",
+    "ApiSecret": "tu-api-secret"
+  },
+
+  "CorsSettings": {
+    "AllowedOrigins": [
+      "https://localhost:7195",
+      "http://localhost:3000"
+    ],
+    "AllowedMethods": [ "GET", "POST", "PUT", "DELETE" ],
+    "AllowedHeaders": [ "Content-Type", "Authorization" ]
+  },
+
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Warning",
+        "System": "Warning"
+      }
+    },
+    "Enrich": [ "FromLogContext", "WithThreadId", "WithMachineName" ],
+    "WriteTo": [
+      {
+        "Name": "File",
+        "Args": {
+          "path": "Logs/log-.txt",
+          "rollingInterval": "Day",
+          "outputTemplate": "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"
+        }
+      }
+    ]
+  }
+}
+
+```
+
+```bash
+dotnet run
+```
+
+La API se iniciará en `https://localhost:7195/` según lo definido en `launchSettings.json`.
+
+---
 ### 4. Ejecutar la aplicación
 
 ```bash
