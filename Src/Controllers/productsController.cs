@@ -18,7 +18,7 @@ public class productsController(ILogger<productsController> logger, IUnitOfWork 
     [HttpGet]
     public async Task<ActionResult<ApiResponse<object>>> GetAll([FromQuery] ProductParams queryParams)
     {
-        var pagedResult = await _unitOfWork.Products.GetPagedProductsAsync(queryParams);
+        var pagedResult = await _unitOfWork.ProductRepository.GetPagedProductsAsync(queryParams);
 
         var dtoList = pagedResult.Items.Select(p => p.ToProductDto());
 
@@ -41,7 +41,7 @@ public class productsController(ILogger<productsController> logger, IUnitOfWork 
     [HttpGet("{id}")]
     public async Task<ActionResult<ApiResponse<ProductDto>>> GetById(int id)
     {
-        var product = await _unitOfWork.Products.GetByIdAsync(id);
+        var product = await _unitOfWork.ProductRepository.GetByIdAsync(id);
         if (product == null)
             return NotFound(new ApiResponse<ProductDto>(false, "Producto no encontrado"));
 
@@ -63,7 +63,7 @@ public class productsController(ILogger<productsController> logger, IUnitOfWork 
         }
 
         var product = dto.ToProductFromCreateDto();
-        await _unitOfWork.Products.AddAsync(product);
+        await _unitOfWork.ProductRepository.AddAsync(product);
         var saved = await _unitOfWork.CompleteAsync();
 
         if (!saved)
@@ -76,12 +76,12 @@ public class productsController(ILogger<productsController> logger, IUnitOfWork 
     [HttpPut("{id}")]
     public async Task<ActionResult<ApiResponse<ProductDto>>> Update(int id, [FromBody] ProductUpdateDto dto)
     {
-        var product = await _unitOfWork.Products.GetByIdAsync(id);
+        var product = await _unitOfWork.ProductRepository.GetByIdAsync(id);
         if (product == null)
             return NotFound(new ApiResponse<ProductDto>(false, "Producto no encontrado"));
 
         product.UpdateProductFromDto(dto);
-        await _unitOfWork.Products.Update(product);
+        await _unitOfWork.ProductRepository.Update(product);
         var saved = await _unitOfWork.CompleteAsync();
 
         if (!saved)
@@ -94,11 +94,11 @@ public class productsController(ILogger<productsController> logger, IUnitOfWork 
     [HttpDelete("{id}")]
     public async Task<ActionResult<ApiResponse<string>>> Delete(int id)
     {
-        var product = await _unitOfWork.Products.GetByIdAsync(id);
+        var product = await _unitOfWork.ProductRepository.GetByIdAsync(id);
         if (product == null)
             return NotFound(new ApiResponse<string>(false, "Producto no encontrado"));
 
-        _unitOfWork.Products.Delete(product);
+        _unitOfWork.ProductRepository.Delete(product);
         var saved = await _unitOfWork.CompleteAsync();
 
         if (!saved)
