@@ -56,7 +56,7 @@ Src/
 ├── Controllers/        → Controladores donde se encuentran los endpoints
 ├── Data/               → DataContext, DbInitializer, Migraciones EF
 ├── Dtos/               → Clases para transferencia de datos (UserDto, etc.)
-├── Interfaces/         → Interfaces para abstracción de lógica (repositorios, unidades de trabajo)
+├── Helpers/            → Archivo con ayudas de validaciones y mappingprofile
 ├── Mappers/            → Conversión entre modelos y DTOs
 ├── Models/             → Entidades del dominio: Product, User, CartItem, etc.
 ├── Repositories/       → Implementaciones de lógica de acceso a datos
