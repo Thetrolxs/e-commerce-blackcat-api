@@ -6,16 +6,28 @@ using e_commerce_blackcat_api.Src.Dtos;
 using e_commerce_blackcat_api.Src.Models;
 using e_commerce_blackcat_api.Src.Mappers;
 using e_commerce_blackcat_api.Helpers;
+using e_commerce_blackcat_api.Src.Services;
 
 
 namespace e_commerce_blackcat_api.Src.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ProductController(ILogger<ProductController> logger, IUnitOfWork unitOfWork) : ControllerBase
+public class ProductController : ControllerBase
 {
-    private readonly ILogger<ProductController> _logger = logger;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly ILogger<ProductController> _logger;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ICloudinaryService _cloudinaryService;
+
+    public ProductController(
+        ILogger<ProductController> logger,
+        IUnitOfWork unitOfWork,
+        ICloudinaryService cloudinaryService)
+    {
+        _logger = logger;
+        _unitOfWork = unitOfWork;
+        _cloudinaryService = cloudinaryService;
+    }
 
     [HttpGet]
     public async Task<ActionResult<ApiResponse<object>>> GetAll([FromQuery] ProductParams queryParams)
@@ -64,7 +76,9 @@ public class ProductController(ILogger<ProductController> logger, IUnitOfWork un
             return BadRequest(new ApiResponse<ProductDto>(false, "Datos inválidos", default, errors));
         }
 
-        var product = dto.ToProductFromCreateDto();
+        var imageUrl = await _cloudinaryService.UploadImageAsync(dto.Image!);
+
+        var product = dto.ToProductFromCreateDto(imageUrl);
         await _unitOfWork.ProductRepository.AddAsync(product);
         var saved = await _unitOfWork.CompleteAsync() ;
 
