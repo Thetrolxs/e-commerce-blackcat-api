@@ -1,8 +1,13 @@
-using e_commerce_blackcat_api.Src.Models;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
-namespace e_commerce_blackcat_api.Models;
+using System;
 
-public class Product
+namespace e_commerce_blackcat_api.Src.Dtos;
+
+public class ProductDto
 {
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
@@ -12,11 +17,6 @@ public class Product
     public string Category { get; set; } = string.Empty;
     public string Brand { get; set; } = string.Empty;
     public bool IsNew { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public string? Image { get; set; }
-
-    //Relaciones
-    public ICollection<CartItem> CartItems { get; set; } = null!;
-    public ICollection<OrderDetail> OrderDetails { get; set; } = null!;
-
+    public string Image { get; set; } = null!;
+    public DateTime CreatedAt { get; set; }
 }

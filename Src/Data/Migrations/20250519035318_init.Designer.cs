@@ -11,8 +11,8 @@ using e_commerce_blackcat_api.Data;
 namespace e_commerce_blackcat_api.Src.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250421013945_InitialMigrations")]
-    partial class InitialMigrations
+    [Migration("20250519035318_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -169,6 +169,9 @@ namespace e_commerce_blackcat_api.Src.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("IsNew")
                         .HasColumnType("INTEGER");
 
@@ -312,8 +315,14 @@ namespace e_commerce_blackcat_api.Src.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("Birthday")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DesactivationReason")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -325,6 +334,12 @@ namespace e_commerce_blackcat_api.Src.Data.Migrations
 
                     b.Property<string>("FullName")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("LastAccess")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
@@ -358,6 +373,9 @@ namespace e_commerce_blackcat_api.Src.Data.Migrations
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UserRegister")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
